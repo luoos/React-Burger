@@ -1,0 +1,20 @@
+import React from 'react';
+
+const orderSummary = (props) => {
+  const ingredientsSummary = Object.entries(props.ingredients)
+      .map(ele =>(<li key={ele[0]}>
+                    <span style={{textTransform: 'capitalize'}}>{ele[0]}</span>: {ele[1]}
+                  </li>));
+  return (
+    <>
+      <h3>Your Order</h3>
+      <p>A delicious burger with the following ingredients:</p>
+      <ul>
+        {ingredientsSummary}
+      </ul>
+      <p>Continue to Checkout?</p>
+    </>
+  );
+};
+
+export default orderSummary;
