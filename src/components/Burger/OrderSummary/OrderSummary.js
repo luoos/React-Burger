@@ -1,5 +1,7 @@
 import React from 'react';
 
+import Button from '../../UI/Button/Button';
+
 const orderSummary = (props) => {
   const ingredientsSummary = Object.entries(props.ingredients)
       .map(ele =>(<li key={ele[0]}>
@@ -13,6 +15,8 @@ const orderSummary = (props) => {
         {ingredientsSummary}
       </ul>
       <p>Continue to Checkout?</p>
+      <Button btnType="Danger" clicked={props.purchaseCancelled}>CANCEL</Button>
+      <Button btnType="Success" clicked={props.purchaseContinued}>CONTINUE</Button>
     </>
   );
 };
