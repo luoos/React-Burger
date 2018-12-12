@@ -30,6 +30,14 @@ Generate production files into `dist` folder
 npm run build
 ```
 
+#### Run Json Server
+
+Mock REST API
+
+```shell
+npm run json:server
+```
+
 ## Reference
 
 - [React-Webpack-Starter](https://github.com/luoos/React-Webpack-Starter)
