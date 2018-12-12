@@ -132,7 +132,6 @@ class BurgerBuilder extends Component {
         purchaseCancelled={this.purchaseCancelHandler}
         purchaseContinued={this.purchaseContinueHandler} />;
     } else {
-      console.log(this.state.error);
       burger = this.state.error ? <p>Ingredients can't be loaded</p> : <Spinner />;
     }
     if (this.state.loading) {
