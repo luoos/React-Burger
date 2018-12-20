@@ -15,7 +15,12 @@ export default class ContactData extends React.Component {
           type: 'text',
           placeholder: 'Your Name',
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false,
+        touched: false
       },
       street: {
         elementType: 'input',
@@ -23,7 +28,13 @@ export default class ContactData extends React.Component {
           type: 'text',
           placeholder: 'Street',
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true,
+          minLength: 5,
+        },
+        valid: false,
+        touched: false
       },
       zipCode: {
         elementType: 'input',
@@ -31,7 +42,12 @@ export default class ContactData extends React.Component {
           type: 'text',
           placeholder: 'ZIP Code',
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false,
+        touched: false
       },
       country: {
         elementType: 'input',
@@ -39,7 +55,12 @@ export default class ContactData extends React.Component {
           type: 'text',
           placeholder: 'County',
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false,
+        touched: false
       },
       email: {
         elementType: 'input',
@@ -47,7 +68,12 @@ export default class ContactData extends React.Component {
           type: 'email',
           placeholder: 'Your E-Mail',
         },
-        value: ''
+        value: '',
+        validation: {
+          required: true
+        },
+        valid: false,
+        touched: false
       },
       deliveryMethod: {
         elementType: 'select',
@@ -57,9 +83,14 @@ export default class ContactData extends React.Component {
             {value: 'cheapest', displayValue: 'Cheapest'}
           ]
         },
-        value: 'fastest'
+        validation: {
+          required: false,
+        },
+        value: 'fastest',
+        valid: true
       },
     },
+    formIsValid: false,
     loading: false
   }
 
@@ -85,6 +116,18 @@ export default class ContactData extends React.Component {
     event.preventDefault();
   }
 
+  checkValidity(value, rules) {
+    if (!rules) return true;
+    let isValid = true;
+    if (isValid && rules.required) {
+      isValid = value.trim() !== '';
+    }
+    if (isValid && rules.minLength) {
+      isValid = value.length >= rules.minLength;
+    }
+    return isValid;
+  }
+
   inputChangedHandler = (event, inputIdentifier) => {
     const updatedOrderForm = {
       ...this.state.orderForm
@@ -93,8 +136,16 @@ export default class ContactData extends React.Component {
       ...updatedOrderForm[inputIdentifier]
     }
     updatedFormElement.value = event.target.value;
+    updatedFormElement.valid = this.checkValidity(updatedFormElement.value, updatedFormElement.validation);
+    updatedFormElement.touched = true;
     updatedOrderForm[inputIdentifier] = updatedFormElement;
-    this.setState({orderForm: updatedOrderForm});
+
+    let formIsValid = true;
+    for (let inputIdentifier in updatedOrderForm) {
+      formIsValid = updatedOrderForm[inputIdentifier].valid && formIsValid;
+    }
+
+    this.setState({orderForm: updatedOrderForm, formIsValid: formIsValid});
   }
 
   render() {
@@ -117,9 +168,12 @@ export default class ContactData extends React.Component {
               elementType={formElement.config.elementType}
               elementConfig={formElement.config.elementConfig}
               value={formElement.config.value}
+              invalid={!formElement.config.valid}
+              shouldValidate={formElement.config.validation.required}
+              touched={formElement.config.touched}
               changed={(event) => this.inputChangedHandler(event, formElement.id)} />
           ))}
-          <Button btnType="Success" clicked={this.orderHandler}>ORDER</Button>
+          <Button btnType="Success" clicked={this.orderHandler} disabled={!this.state.formIsValid}>ORDER</Button>
         </form>
       );
     }
