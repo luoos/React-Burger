@@ -38,6 +38,35 @@ class Auth extends React.Component {
     }
   }
 
+  checkValidity(value, rules) {
+    if (!rules) return true;
+    let isValid = true;
+    if (isValid && rules.required) {
+      isValid = value.trim() !== '';
+    }
+    if (isValid && rules.minLength) {
+      isValid = value.length >= rules.minLength;
+    }
+    if (isValid && rules.isEmail) {
+      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      isValid = pattern.test(value);
+    }
+    return isValid;
+  }
+
+  inputChangedHandler = (event, controlName) => {
+    const updatedControls = {
+      ...this.state.controls,
+      [controlName]: {
+        ...this.state.controls[controlName],
+        value: event.target.value,
+        valid: this.checkValidity(event.target.value, this.state.controls[controlName].validation),
+        touched: true
+      }
+    };
+    this.setState({controls: updatedControls});
+  }
+
   render() {
     const formElementsArray = [];
     for (let key in this.state.controls) {

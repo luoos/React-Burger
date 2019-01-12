@@ -73,7 +73,8 @@ class ContactData extends React.Component {
         },
         value: '',
         validation: {
-          required: true
+          required: true,
+          isEmail: true
         },
         valid: false,
         touched: false
@@ -119,6 +120,10 @@ class ContactData extends React.Component {
     }
     if (isValid && rules.minLength) {
       isValid = value.length >= rules.minLength;
+    }
+    if (isValid && rules.isEmail) {
+      const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+      isValid = pattern.test(value);
     }
     return isValid;
   }
