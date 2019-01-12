@@ -9,7 +9,7 @@ This is a course project of [React 16](https://www.udemy.com/react-the-complete-
 Install all dependencies defined in package.json
 
 ```shell
-npm install --package-lock
+npm install
 ```
 
 ### Running
